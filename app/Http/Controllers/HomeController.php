@@ -39,13 +39,14 @@ class HomeController extends Controller
 
     public function markAsDone(Todo $todo)
     {
-        // check if user_id from session is same with user_id from todo
         if (session()->get('user_id') == $todo->user_id) {
             $todo->update(['isDone' => true]);
+            return response()->json(['success' => true]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
         }
-
-        return redirect()->route('home')->with('success', 'Todo marked as done');
     }
+
 
     public function delete(Todo $todo)
     {
